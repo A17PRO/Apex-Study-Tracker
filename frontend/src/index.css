@@ -54,13 +54,11 @@
   }
 }
 
-/* Remove browser default spacing */
 body {
   margin: 0;
   padding: 0;
 }
 
-/* FIXED ROOT CONTAINER */
 #root {
   width: 100%;
   min-height: 100vh;
@@ -70,7 +68,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Typography */
 
 h1,
 h2 {
@@ -124,7 +121,6 @@ code {
   background: var(--code-bg);
 }
 
-/* AMBIENT */
 .sound-card {
   padding: 12px 14px;
   background: var(--surf2);
@@ -196,7 +192,6 @@ code {
   transform: translateX(14px);
 }
 
-/* ANALYTICS / VOLUME SHARED */
 .analytics-view {
   flex: 1;
   padding: 40px;
@@ -245,6 +240,7 @@ code {
 }
 
 .section-h::before {
+
   content: '';
   width: 3px;
   height: 12px;
