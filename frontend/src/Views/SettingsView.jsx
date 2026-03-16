@@ -55,7 +55,6 @@ export default function SettingsView({ settings, setSettings }) {
         }}>
             <div style={{ fontSize: 22, fontWeight: 800, color: C.text }}>Settings</div>
 
-            {/* Timer durations */}
             <Section title="Timer Durations">
                 <Row
                     label="Focus Session"
@@ -79,7 +78,6 @@ export default function SettingsView({ settings, setSettings }) {
                 />
             </Section>
 
-            {/* Daily goals */}
             <Section title="Daily Goals">
                 <Row
                     label="Daily Focus Target"
@@ -88,7 +86,6 @@ export default function SettingsView({ settings, setSettings }) {
                 />
             </Section>
 
-            {/* Behaviour */}
             <Section title="Behaviour">
                 <Row
                     label="Auto-start Breaks"
@@ -120,7 +117,6 @@ export default function SettingsView({ settings, setSettings }) {
                 />
             </Section>
 
-            {/* Appearance */}
             <Section title="Appearance">
                 <Row
                     label="Particle Background"
@@ -129,7 +125,6 @@ export default function SettingsView({ settings, setSettings }) {
                 />
             </Section>
 
-            {/* Preview */}
             <div style={{
                 background: 'rgba(245,158,11,0.06)',
                 border: '1px solid rgba(245,158,11,0.2)',
@@ -151,7 +146,6 @@ export default function SettingsView({ settings, setSettings }) {
                 </div>
             </div>
 
-            {/* Reset */}
             <button onClick={() => setSettings({
                 focus: 25, short: 5, long: 15, goal: 180, sessions: 4,
                 autoBreak: false, autoFocus: false, sound: true, notifs: false, particles: true,

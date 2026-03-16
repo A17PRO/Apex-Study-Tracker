@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { C, SectionLabel } from '../styles.jsx';
 
-// ── Read + compute all stats from stored sessions ─────────────────────────────
 function useStats() {
     return useMemo(() => {
         let sessions = [];
@@ -12,14 +11,12 @@ function useStats() {
         const today = new Date().toISOString().slice(0, 10);
         const now = new Date();
 
-        // ── This month ──────────────────────────────────────────────────────
-        const monthStr = today.slice(0, 7); // "YYYY-MM"
+        const monthStr = today.slice(0, 7);
         const thisMonth = sessions.filter(s => s.date.startsWith(monthStr));
         const monthSessions = thisMonth.length;
         const monthMins = thisMonth.reduce((a, s) => a + (s.duration || 0), 0);
         const monthHours = (monthMins / 60).toFixed(1);
 
-        // ── Current streak (consecutive days up to today) ────────────────────
         const daySet = new Set(sessions.map(s => s.date));
         let streak = 0;
         const d = new Date(today);
@@ -28,7 +25,6 @@ function useStats() {
             d.setDate(d.getDate() - 1);
         }
 
-        // ── Last 7 days bar chart ────────────────────────────────────────────
         const weekDays = Array.from({ length: 7 }, (_, i) => {
             const dt = new Date(now);
             dt.setDate(dt.getDate() - (6 - i));
@@ -42,7 +38,6 @@ function useStats() {
         const maxWeekMins = Math.max(...weekDays.map(d => d.mins), 1);
         const avgMins = Math.round(weekDays.reduce((a, d) => a + d.mins, 0) / 7);
 
-        // ── 28-day activity heatmap ──────────────────────────────────────────
         const heatmap = Array.from({ length: 28 }, (_, i) => {
             const dt = new Date(now);
             dt.setDate(dt.getDate() - (27 - i));
@@ -54,14 +49,12 @@ function useStats() {
         });
         const maxHeatMins = Math.max(...heatmap.map(d => d.mins), 1);
 
-        // ── Peak focus hours (0–23) ──────────────────────────────────────────
         const hourCounts = Array(24).fill(0);
         sessions.forEach(s => {
             if (s.hour >= 0 && s.hour < 24) hourCounts[s.hour] += s.duration || 0;
         });
         const maxHour = Math.max(...hourCounts, 1);
 
-        // ── Today's total ────────────────────────────────────────────────────
         const todayMins = sessions
             .filter(s => s.date === today)
             .reduce((a, s) => a + (s.duration || 0), 0);
@@ -73,7 +66,7 @@ function useStats() {
             hourCounts, maxHour,
             todayMins,
         };
-    }, []); // recomputes each time AnalyticsView mounts
+    }, []);
 }
 
 export default function AnalyticsView({ tasks }) {
@@ -97,7 +90,6 @@ export default function AnalyticsView({ tasks }) {
         }}>
             <div style={{ fontSize: 22, fontWeight: 800, color: C.text }}>Study Analytics</div>
 
-            {/* ── Top stat cards ── */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
                 {[
                     { num: String(monthSessions), sub: 'Sessions', color: C.white },
@@ -115,7 +107,6 @@ export default function AnalyticsView({ tasks }) {
                 ))}
             </div>
 
-            {/* ── Today's focus ── */}
             <div style={{ background: C.surf, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20 }}>
                 <SectionLabel style={{ marginBottom: 12 }}>Today's Focus</SectionLabel>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
@@ -139,7 +130,6 @@ export default function AnalyticsView({ tasks }) {
                 </div>
             </div>
 
-            {/* ── Task progress ── */}
             <div style={{ background: C.surf, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20 }}>
                 <SectionLabel style={{ marginBottom: 14 }}>Task Completion</SectionLabel>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
@@ -166,7 +156,6 @@ export default function AnalyticsView({ tasks }) {
                 </div>
             </div>
 
-            {/* ── Weekly bar chart ── */}
             <div style={{ background: C.surf, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20 }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 16 }}>
                     <SectionLabel>Last 7 Days (minutes)</SectionLabel>
@@ -196,7 +185,6 @@ export default function AnalyticsView({ tasks }) {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
 
-                {/* ── 28-day heatmap ── */}
                 <div style={{ background: C.surf, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20 }}>
                     <SectionLabel style={{ marginBottom: 14 }}>28-Day Activity</SectionLabel>
                     <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
@@ -232,7 +220,6 @@ export default function AnalyticsView({ tasks }) {
                     </div>
                 </div>
 
-                {/* ── Peak focus hours ── */}
                 <div style={{ background: C.surf, border: `1px solid ${C.border}`, borderRadius: 16, padding: 20 }}>
                     <SectionLabel style={{ marginBottom: 14 }}>Peak Focus Hours</SectionLabel>
                     <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, height: 60 }}>

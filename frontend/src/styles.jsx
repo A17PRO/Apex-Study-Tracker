@@ -1,4 +1,3 @@
-// ── Shared design tokens ──────────────────────────────────────────────────────
 export const C = {
     bg: '#07090f',
     surf: '#0c0f1a',
@@ -17,7 +16,6 @@ export const C = {
     sans: "'Syne', sans-serif",
 };
 
-// Reusable card wrapper
 export const Card = ({ children, style = {} }) => (
     <div style={{
         background: C.surf, border: `1px solid ${C.border}`,
@@ -27,7 +25,6 @@ export const Card = ({ children, style = {} }) => (
     </div>
 );
 
-// Section heading with amber bar
 export const SectionLabel = ({ children, style = {} }) => (
     <div style={{
         fontSize: 10, fontWeight: 700, letterSpacing: 3,
@@ -40,7 +37,6 @@ export const SectionLabel = ({ children, style = {} }) => (
     </div>
 );
 
-// Toggle pill
 export const Toggle = ({ on, onClick }) => (
     <div onClick={onClick} style={{
         width: 36, height: 20, borderRadius: 10, cursor: 'pointer', flexShrink: 0,
@@ -54,7 +50,6 @@ export const Toggle = ({ on, onClick }) => (
     </div>
 );
 
-// Round icon button
 export const IconBtn = ({ onClick, children, title }) => (
     <button onClick={onClick} title={title} style={{
         width: 44, height: 44, borderRadius: '50%',

@@ -28,7 +28,6 @@ export default function ParticleBackground() {
             }
 
             update() {
-                // Drift
                 this.baseX += this.vx;
                 this.baseY += this.vy;
                 if (this.baseX < 0) this.baseX = canvas.width;
@@ -36,7 +35,6 @@ export default function ParticleBackground() {
                 if (this.baseY < 0) this.baseY = canvas.height;
                 if (this.baseY > canvas.height) this.baseY = 0;
 
-                // Mouse repulsion
                 const dx = mouse.x - this.x;
                 const dy = mouse.y - this.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
@@ -47,7 +45,6 @@ export default function ParticleBackground() {
                     this.x -= Math.cos(angle) * force * 9;
                     this.y -= Math.sin(angle) * force * 9;
                 } else {
-                    // Spring back to base position
                     this.x += (this.baseX - this.x) * 0.06;
                     this.y += (this.baseY - this.y) * 0.06;
                 }
@@ -72,7 +69,6 @@ export default function ParticleBackground() {
         const animate = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw connecting lines between nearby particles
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;

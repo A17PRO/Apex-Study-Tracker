@@ -13,15 +13,14 @@ const ResetIcon = () => (
     </svg>
 );
 
-// ── Save a completed focus session to localStorage ──────────────────────────
 function saveSession(durationMins, taskText) {
     try {
         const all = JSON.parse(localStorage.getItem("apex_sessions") || "[]");
         const now = new Date();
         all.push({
             id: now.getTime(),
-            date: now.toISOString().slice(0, 10), // "YYYY-MM-DD"
-            hour: now.getHours(),                  // 0–23
+            date: now.toISOString().slice(0, 10),
+            hour: now.getHours(),
             duration: durationMins,
             task: taskText || null,
         });
@@ -39,42 +38,35 @@ export default function TimerView({ tasks = [], settings = {} }) {
     const totalTime = (settings[MODES[modeIdx].key] || MODES[modeIdx].mins) * 60;
     const activeTasks = tasks.filter(t => !t.done);
 
-    // Reset when mode / settings change
     useEffect(() => {
         setTimeLeft(totalTime);
         setActive(false);
     }, [modeIdx, totalTime]);
 
-    // Countdown tick
     useEffect(() => {
         let iv = null;
         if (active && timeLeft > 0) {
             iv = setInterval(() => setTimeLeft(t => t - 1), 1000);
         }
         if (timeLeft === 0 && active === false && modeIdx === 0) {
-            // already handled below
         }
         return () => clearInterval(iv);
     }, [active, timeLeft]);
 
-    // Session complete handler
     useEffect(() => {
         if (timeLeft !== 0) return;
         setActive(false);
         if (modeIdx === 0) {
-            // Record the session
             const mins = settings[MODES[0].key] || MODES[0].mins;
             const taskText = activeTasks[selTask % Math.max(activeTasks.length, 1)]?.text || null;
             saveSession(mins, taskText);
             setSessCount(c => c + 1);
 
-            // Auto-start break if enabled
             if (settings.autoBreak) {
                 const nextIdx = sessCount > 0 && (sessCount + 1) % 4 === 0 ? 2 : 1;
                 setModeIdx(nextIdx);
             }
         }
-        // Play alert chime
         if (settings.sound) {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -108,7 +100,6 @@ export default function TimerView({ tasks = [], settings = {} }) {
             color: "white", gap: "25px",
         }}>
 
-            {/* MODE TABS */}
             <div style={{ display: "flex", gap: "10px" }}>
                 {MODES.map((m, i) => (
                     <button key={m.key} onClick={() => setModeIdx(i)} style={{
@@ -123,7 +114,6 @@ export default function TimerView({ tasks = [], settings = {} }) {
                 ))}
             </div>
 
-            {/* TASK CHIP */}
             {activeTasks.length > 0 && (
                 <div onClick={() => setSelTask(s => (s + 1) % activeTasks.length)}
                     style={{
@@ -144,7 +134,6 @@ export default function TimerView({ tasks = [], settings = {} }) {
                 </div>
             )}
 
-            {/* TIMER RING */}
             <div style={{ position: "relative", width: 280, height: 280 }}>
                 <svg viewBox="0 0 280 280">
                     {Array.from({ length: 60 }, (_, i) => {
@@ -171,7 +160,6 @@ export default function TimerView({ tasks = [], settings = {} }) {
                     />
                 </svg>
 
-                {/* TIMER TEXT */}
                 <div style={{
                     position: "absolute", top: "50%", left: "50%",
                     transform: "translate(-50%,-50%)", textAlign: "center",
@@ -185,7 +173,6 @@ export default function TimerView({ tasks = [], settings = {} }) {
                             Working on: {activeTasks[selTask % activeTasks.length]?.text}
                         </div>
                     )}
-                    {/* SESSION DOTS */}
                     <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 12 }}>
                         {Array.from({ length: 4 }, (_, i) => (
                             <div key={i} style={{
@@ -198,7 +185,6 @@ export default function TimerView({ tasks = [], settings = {} }) {
                 </div>
             </div>
 
-            {/* CONTROLS */}
             <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
                 <button onClick={() => { setTimeLeft(totalTime); setActive(false); }}
                     style={{ width: 40, height: 40, borderRadius: "50%", border: "none", background: "#111827", color: "white", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -216,7 +202,6 @@ export default function TimerView({ tasks = [], settings = {} }) {
                 </button>
             </div>
 
-            {/* SESSION COUNT */}
             <div style={{ fontSize: 11, color: "#64748b", fontFamily: "monospace" }}>
                 {sessCount} session{sessCount !== 1 ? "s" : ""} completed today
             </div>

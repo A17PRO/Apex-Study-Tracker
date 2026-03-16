@@ -24,15 +24,12 @@ export default function SidePanel({ tasks, setTasks }) {
             background: C.surf, borderLeft: `1px solid ${C.border}`,
             display: 'flex', flexDirection: 'column', overflow: 'hidden',
         }}>
-            {/* Title */}
             <div style={{ padding: '20px 18px 8px' }}>
                 <SectionLabel>Today's Focus</SectionLabel>
             </div>
 
-            {/* Scrollable body */}
             <div style={{ flex: 1, overflowY: 'auto', padding: '0 18px 18px', display: 'flex', flexDirection: 'column', gap: 10 }}>
 
-                {/* Focus time stat */}
                 <div style={{ background: C.surf2, border: `1px solid ${C.border}`, borderRadius: 12, padding: 14 }}>
                     <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: C.muted, textTransform: 'uppercase', marginBottom: 6 }}>
                         Total Focus Time
@@ -55,10 +52,8 @@ export default function SidePanel({ tasks, setTasks }) {
                     </div>
                 </div>
 
-                {/* Divider */}
                 <div style={{ height: 1, background: C.border }} />
 
-                {/* Queue */}
                 <SectionLabel>Queue</SectionLabel>
 
                 {tasks.length === 0 && (
@@ -73,7 +68,6 @@ export default function SidePanel({ tasks, setTasks }) {
                         padding: '8px 10px', borderRadius: 9,
                         background: C.surf2, border: `1px solid ${C.border}`,
                     }}>
-                        {/* Checkbox */}
                         <div onClick={() => toggle(t.id)} style={{
                             width: 16, height: 16, borderRadius: 4, flexShrink: 0, cursor: 'pointer',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -106,7 +100,6 @@ export default function SidePanel({ tasks, setTasks }) {
                     </div>
                 ))}
 
-                {/* Add input */}
                 <div style={{ display: 'flex', gap: 6 }}>
                     <input
                         value={input}
@@ -127,10 +120,8 @@ export default function SidePanel({ tasks, setTasks }) {
                     }}>+</button>
                 </div>
 
-                {/* Divider */}
                 <div style={{ height: 1, background: C.border }} />
 
-                {/* Weekly mini chart */}
                 <SectionLabel>This Week</SectionLabel>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     {WEEK_DATA.map(({ d, m }) => (

@@ -18,7 +18,6 @@ const AmbientView = () => {
             const next = { ...s, [id]: !s[id] };
 
             if (next[id]) {
-                // Start playing
                 if (!audioRefs.current[id]) {
                     const sound = SOUNDS.find(s => s.id === id);
                     const audio = new Audio(sound.file);
@@ -28,7 +27,6 @@ const AmbientView = () => {
                 }
                 audioRefs.current[id].play().catch(() => { });
             } else {
-                // Stop playing
                 if (audioRefs.current[id]) {
                     audioRefs.current[id].pause();
                     audioRefs.current[id].currentTime = 0;
@@ -45,7 +43,6 @@ const AmbientView = () => {
         const clamped = Math.max(0, Math.min(100, percent));
         setVolume(clamped);
 
-        // Apply to all active audio elements
         Object.values(audioRefs.current).forEach(audio => {
             if (audio) audio.volume = clamped / 100;
         });
@@ -62,7 +59,6 @@ const AmbientView = () => {
                 Layer background sounds to boost focus and mask distractions.
             </p>
 
-            {/* SOUND GRID */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 {SOUNDS.map(s => (
                     <div
@@ -91,7 +87,6 @@ const AmbientView = () => {
                 ))}
             </div>
 
-            {/* VOLUME */}
             <div className="weekly-chart" style={{ marginTop: 8 }}>
                 <div className="analytics-title">Volume</div>
 
@@ -109,7 +104,6 @@ const AmbientView = () => {
                             cursor: 'pointer',
                         }}
                     >
-                        {/* Fill */}
                         <div style={{
                             position: 'absolute',
                             left: 0, top: 0,
@@ -120,7 +114,6 @@ const AmbientView = () => {
                             boxShadow: '0 0 6px rgba(245,158,11,0.5)',
                         }} />
 
-                        {/* Knob */}
                         <div style={{
                             position: 'absolute',
                             top: '50%',

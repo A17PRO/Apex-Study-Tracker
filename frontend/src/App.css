@@ -1,5 +1,3 @@
-/* SOUND CARD */
-
 .sound-card {
   padding: 12px;
   background: var(--surf2);
@@ -25,8 +23,6 @@
   font-size: 13px;
   font-weight: 600;
 }
-
-/* TOGGLE */
 
 .switch {
   position: relative;
@@ -67,8 +63,6 @@
 .switch input:checked+.slider:before {
   transform: translateX(16px);
 }
-
-/* VOLUME BAR */
 
 .volume-bar {
   flex: 1;

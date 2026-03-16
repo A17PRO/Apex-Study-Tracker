@@ -16,7 +16,6 @@ export default function NavBar({ view, setView }) {
             display: 'flex', flexDirection: 'column', alignItems: 'center',
             padding: '20px 0', gap: 4, zIndex: 20, flexShrink: 0,
         }}>
-            {/* Logo */}
             <div style={{
                 fontFamily: "'JetBrains Mono', monospace",
                 fontSize: 11, fontWeight: 800, color: '#f59e0b',
@@ -25,7 +24,6 @@ export default function NavBar({ view, setView }) {
                 APEX
             </div>
 
-            {/* Nav items */}
             {NAV_ITEMS.map(({ id, Icon, label }) => (
                 <div key={id} onClick={() => setView(id)} style={{
                     width: 62, height: 52, borderRadius: 12,
@@ -39,7 +37,6 @@ export default function NavBar({ view, setView }) {
                     transition: 'all 0.18s',
                     position: 'relative',
                 }}>
-                    {/* Active indicator bar */}
                     {view === id && (
                         <div style={{
                             position: 'absolute', left: -1, top: '50%', transform: 'translateY(-50%)',
@@ -57,10 +54,8 @@ export default function NavBar({ view, setView }) {
                 </div>
             ))}
 
-            {/* Spacer */}
             <div style={{ flex: 1 }} />
 
-            {/* Avatar */}
             <div style={{
                 width: 34, height: 34, borderRadius: '50%',
                 background: 'linear-gradient(135deg, #f59e0b, #d97706)',
