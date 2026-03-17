@@ -54,6 +54,7 @@ export default function TimerView({ tasks = [], settings = {} }) {
     useEffect(() => {
         if (timeLeft !== 0) return;
         setActive(false);
+
         if (modeIdx === 0) {
             const mins = settings[MODES[0].key] || MODES[0].mins;
             const taskText = activeTasks[selTask % Math.max(activeTasks.length, 1)]?.text || null;
@@ -61,20 +62,22 @@ export default function TimerView({ tasks = [], settings = {} }) {
             setSessCount(c => c + 1);
 
             if (settings.autoBreak) {
-                const nextIdx = sessCount > 0 && (sessCount + 1) % 4 === 0 ? 2 : 1;
+                const nextIdx = (sessCount + 1) % 4 === 0 ? 2 : 1;
                 setModeIdx(nextIdx);
             }
         }
-        if (settings.sound) {
+
+        if (settings.sound !== false) {
             try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioContext();
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.connect(gain);
                 gain.connect(ctx.destination);
                 osc.frequency.value = 880;
-                osc.type = "sine";
-                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.setValueAtTime(0, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.1);
                 gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
                 osc.start();
                 osc.stop(ctx.currentTime + 1.2);
@@ -112,26 +115,6 @@ export default function TimerView({ tasks = [], settings = {} }) {
                 ))}
             </div>
 
-            {activeTasks.length > 0 && (
-                <div onClick={() => setSelTask(s => (s + 1) % activeTasks.length)}
-                    style={{
-                        display: "flex", alignItems: "center", gap: 10,
-                        padding: "8px 14px", borderRadius: 999,
-                        background: "#111827", cursor: "pointer",
-                        border: "1px solid rgba(255,255,255,0.05)",
-                        fontSize: 13, fontWeight: 600,
-                    }}>
-                    <div style={{
-                        width: 8, height: 8, borderRadius: 3,
-                        background: activeTasks[selTask % activeTasks.length]?.priority || "#f59e0b",
-                    }} />
-                    <span>{activeTasks[selTask % activeTasks.length]?.text}</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="gray" strokeWidth="2">
-                        <path d="m9 18 6-6-6-6" />
-                    </svg>
-                </div>
-            )}
-
             <div style={{ position: "relative", width: 280, height: 280 }}>
                 <svg viewBox="0 0 280 280">
                     {Array.from({ length: 60 }, (_, i) => {
@@ -162,15 +145,13 @@ export default function TimerView({ tasks = [], settings = {} }) {
                     position: "absolute", top: "50%", left: "50%",
                     transform: "translate(-50%,-50%)", textAlign: "center",
                 }}>
-                    <div style={{ fontSize: 42, fontWeight: 700 }}>{fmt(timeLeft)}</div>
+                    <div className="timer-text" style={{ fontSize: 42, fontWeight: 700 }}>
+                        {fmt(timeLeft)}
+                    </div>
                     <div style={{ fontSize: 14, opacity: 0.6 }}>
                         {active ? `${pct}% elapsed` : timeLeft === totalTime ? MODES[modeIdx].label : "paused"}
                     </div>
-                    {activeTasks.length > 0 && (
-                        <div style={{ marginTop: 8, fontSize: 13, opacity: 0.7 }}>
-                            Working on: {activeTasks[selTask % activeTasks.length]?.text}
-                        </div>
-                    )}
+
                     <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 12 }}>
                         {Array.from({ length: 4 }, (_, i) => (
                             <div key={i} style={{
